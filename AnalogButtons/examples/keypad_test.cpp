@@ -1,4 +1,4 @@
-#include "AnalogButtons.h"
+#include "../AnalogButtons.h"
 
 #define BUTTON_ADC_PIN           A0  // A0 is the button ADC input
 
@@ -9,7 +9,7 @@
 AnalogButtons button(BUTTON_ADC_PIN, AnalogButtons::OTHER);
 bool prevPressed = false;
 
-void k_setup() {
+void setup() {
 	Serial.begin(19200);
 
 	button.calibrate();
@@ -55,25 +55,25 @@ void displayButton(int b) {
 
 }
 
-void k_loop() {
+void loop() {
    button.read();
 
-   if (button.getButtonJustPressed() && !prevPressed) {
+   if (button.buttonWasJustPressed() && !prevPressed) {
      //show text label for the button pressed
 #ifdef SHOW_VOLTAGE
 	   Serial.print(button.voltageWas, DEC);
 #endif
-      displayButton(button.getButtonWas());
+      displayButton(button.getButton());
       Serial.println(" pressed");
       prevPressed = true;
    }
 
-   if (button.getButtonJustReleased() && prevPressed) {
+   if (button.buttonWasJustReleased() && prevPressed) {
      //show text label for the button pressed
 #ifdef SHOW_VOLTAGE
 	   Serial.print(button.voltageWas, DEC);
 #endif
-      displayButton(button.getButtonWas());
+      displayButton(button.getButton());
       Serial.println(" released");
       prevPressed = false;
    }

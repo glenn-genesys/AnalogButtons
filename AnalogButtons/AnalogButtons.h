@@ -68,7 +68,7 @@ public:
 	float getButtonVoltage();
 	void calibrate();
 	
-	byte getButtonWas();
+	byte getButton();
 	bool buttonWasJustPressed();
 	bool buttonWasJustReleased();
 };

@@ -68,7 +68,7 @@ void AnalogButtons::init(int rv, int uv, int dv, int lv, int sv) {
   SELECT_10BIT_ADC = sv;
 }
 
-byte AnalogButtons::getButtonWas() { return buttonWas; }
+byte AnalogButtons::getButton() { return buttonWas; }
 bool AnalogButtons::buttonWasJustPressed() { return buttonJustPressed; }
 bool AnalogButtons::buttonWasJustReleased() { return buttonJustReleased; }
 
@@ -139,6 +139,8 @@ float AnalogButtons::getButtonVoltage() {
 	const float averagingRatio = 0.9;
 
 	unsigned int pinVoltage = analogRead( ADC_PIN );
+	float firstVoltage;
+
 	float buttonVoltage;
 	unsigned int minVoltage = 1024, maxVoltage = 0;
 
@@ -146,6 +148,7 @@ float AnalogButtons::getButtonVoltage() {
 	while (pinVoltage > 1020)
 	   pinVoltage = analogRead( ADC_PIN );
 
+	firstVoltage = pinVoltage;
 	Serial.print("First press: ");
 	Serial.println(pinVoltage);
 	buttonVoltage = pinVoltage;
@@ -164,7 +167,7 @@ float AnalogButtons::getButtonVoltage() {
 	Serial.print(" < ");
 	Serial.println(maxVoltage);
 
-	return buttonVoltage;
+	return firstVoltage;
 }
 
 /*--------------------------------------------------------------------------------------
@@ -176,14 +179,18 @@ void AnalogButtons::calibrate()
    unsigned int buttonVoltage;
    byte button = BUTTON_NONE;   // return no button pressed if the below checks don't write to btn
 
+   int rv, uv, dv, lv, sv;
+
    Serial.print(F("Press 'Right' "));
-   getButtonVoltage();
+   rv = getButtonVoltage();
    Serial.print(F("'Up' "));
-   getButtonVoltage();
+   uv = getButtonVoltage();
    Serial.print(F("'Down' "));
-   getButtonVoltage();
+   dv = getButtonVoltage();
    Serial.print(F("'Left' "));
-   getButtonVoltage();
+   lv = getButtonVoltage();
    Serial.print(F("'Select' "));
-   getButtonVoltage();
+   sv = getButtonVoltage();
+
+   init(rv, uv, dv, lv, sv);
 }

@@ -20,7 +20,28 @@ Example usage:
 	// Configure a new keypad with the given voltage levels
 	AnalogButtons button(BUTTON_ADC_PIN, 0, 98, 252, 407, 637);  
 	
-	// Wait for a keypress then act on result
+	// Button testing loop
+	bool prevPressed = false;
+	void loop() {
+	   button.read();
+	
+	   if (button.buttonWasJustPressed() && !prevPressed) {
+	     //show text label for the button pressed
+	      displayButton(button.getButton());
+	      Serial.println(" pressed");
+	      prevPressed = true;
+	   }
+	
+	   if (button.buttonWasJustReleased() && prevPressed) {
+	     //show text label for the button released
+	      displayButton(button.getButton());
+	      Serial.println(" released");
+	      prevPressed = false;
+	   }
+	}
+	
+	
+	// Wait for a key release then act on result
 	while (keypad->buttonWasJustPressed()) keypad->read();
 
 	switch (keypad->getButtonWas()) {
