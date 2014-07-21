@@ -9,7 +9,7 @@
 AnalogButtons button(BUTTON_ADC_PIN, AnalogButtons::OTHER);
 bool prevPressed = false;
 
-void setup() {
+void k_setup() {
 	Serial.begin(19200);
 
 	button.calibrate();
@@ -55,7 +55,7 @@ void displayButton(int b) {
 
 }
 
-void loop() {
+void k_loop() {
    button.read();
 
    if (button.buttonWasJustPressed() && !prevPressed) {
